@@ -1,10 +1,10 @@
-package com.cg.module3.finalexamination_module3.service.imp;
+package com.finalexaminationModule3.service.imp;
 
-import com.cg.module3.finalexamination_module3.Model.Student;
-import com.cg.module3.finalexamination_module3.service.StudentService;
+import com.finalexaminationModule3.Model.Student;
+import com.finalexaminationModule3.service.StudentService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class impStudent {
 
@@ -13,11 +13,10 @@ public class impStudent {
     public Student getByIdStudent(int studentID){
         return s.getStudentById(studentID);
     }
+
     /**
      * Check add new Student
      * @param student STUDENT
-     * @return
-     * @throws SQLException
      */
     public boolean addNewStudent(Student student) throws Exception {
         return s.addStudent(student);
@@ -36,7 +35,7 @@ public class impStudent {
         return s.deleteStudent(id);
     }
 
-    public ArrayList<Student> searchStudentByName(String name) throws SQLException {
-        return (ArrayList<Student>) s.searchStudentsByName(name);
+    public List<Student> searchStudentByName(String name) throws SQLException {
+        return s.searchStudentsByName(name);
     }
 }

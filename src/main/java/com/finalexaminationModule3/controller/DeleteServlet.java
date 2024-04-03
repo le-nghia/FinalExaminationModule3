@@ -1,11 +1,8 @@
-package com.cg.module3.finalexamination_module3.controller;
+package com.finalexaminationModule3.controller;
 
-import com.cg.module3.finalexamination_module3.Model.Classroom;
-import com.cg.module3.finalexamination_module3.Model.Student;
-import com.cg.module3.finalexamination_module3.service.StudentService;
-import com.cg.module3.finalexamination_module3.service.imp.impStudent;
+import com.finalexaminationModule3.service.StudentService;
+import com.finalexaminationModule3.service.imp.impStudent;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,28 +10,26 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet(name = "DeleteServlet",  urlPatterns = "/delete-student")
 public class DeleteServlet extends HttpServlet {
-    private StudentService studentService;
+    StudentService studentService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         studentService = new StudentService();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doPost(req, resp);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        int id = Integer.parseInt(request.getParameter("id"));
         impStudent impStudent = new impStudent();
-//        Student student = impStudent.getByIdStudent(id);
-        boolean check = false;
+        boolean check;
         try {
             check = impStudent.delStudent(id);
             if (check){

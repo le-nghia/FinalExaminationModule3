@@ -1,4 +1,4 @@
-package com.cg.module3.finalexamination_module3.DBContext;
+package com.finalexaminationModule3.DBContext;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,9 +9,11 @@ public class DBContext {
     private static final String password = "Nghia.it97@LN";
 
     public Connection getConnection() throws SQLException {
+        int count = 0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("===> Connections success!");
+            count++;
+            System.out.println("===> Connections success!" + " Count: " + count);
             return DriverManager.getConnection(URL, username, password);
         } catch (ClassNotFoundException | SQLException e) {
             throw new SQLException("Failed to establish connection to database:" + e.getMessage());
@@ -22,7 +24,7 @@ public class DBContext {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException("==> Run time error!");
             }
         }
     }

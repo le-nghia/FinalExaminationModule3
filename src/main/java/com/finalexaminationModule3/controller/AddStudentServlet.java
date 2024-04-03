@@ -1,10 +1,9 @@
-package com.cg.module3.finalexamination_module3.controller;
+package com.finalexaminationModule3.controller;
 
-import com.cg.module3.finalexamination_module3.Model.Classroom;
-import com.cg.module3.finalexamination_module3.Model.Student;
-import com.cg.module3.finalexamination_module3.service.ClassroomService;
-import com.cg.module3.finalexamination_module3.service.StudentService;
-import com.cg.module3.finalexamination_module3.service.imp.impStudent;
+import com.finalexaminationModule3.Model.Classroom;
+import com.finalexaminationModule3.Model.Student;
+import com.finalexaminationModule3.service.ClassroomService;
+import com.finalexaminationModule3.service.imp.impStudent;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,13 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet(name = "AddStudentServlet",  urlPatterns = "/add-student")
 public class AddStudentServlet extends HttpServlet {
-    private final StudentService studentService = new StudentService();
     private final ClassroomService classroomService = new ClassroomService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,7 +56,7 @@ public class AddStudentServlet extends HttpServlet {
                 System.out.println("===> Add new STUDENT SUCCESSFULLY.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error");
         }
     }
 }

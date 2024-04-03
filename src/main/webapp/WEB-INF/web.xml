@@ -10,7 +10,7 @@
 
     <servlet>
         <servlet-name>FinalExaminationModule3</servlet-name>
-        <servlet-class>com.cg.module3.finalexamination_module3.controller.StudentHome</servlet-class>
+        <servlet-class>com.finalexaminationModule3.controller.StudentHome</servlet-class>
     </servlet>
 
     <servlet-mapping>

@@ -1,7 +1,7 @@
-package com.cg.module3.finalexamination_module3.controller;
+package com.finalexaminationModule3.controller;
 
-import com.cg.module3.finalexamination_module3.Model.Student;
-import com.cg.module3.finalexamination_module3.service.StudentService;
+import com.finalexaminationModule3.Model.Student;
+import com.finalexaminationModule3.service.StudentService;
 
 import java.io.*;
 import java.util.List;
@@ -13,7 +13,7 @@ import javax.servlet.annotation.*;
 public class StudentHome extends HttpServlet {
     private StudentService studentService;
     @Override
-    public void init() throws ServletException {
+    public void init() {
         studentService = new StudentService();
     }
     @Override

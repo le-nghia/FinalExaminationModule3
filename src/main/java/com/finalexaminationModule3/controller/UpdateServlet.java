@@ -1,10 +1,10 @@
-package com.cg.module3.finalexamination_module3.controller;
+package com.finalexaminationModule3.controller;
 
-import com.cg.module3.finalexamination_module3.Model.Classroom;
-import com.cg.module3.finalexamination_module3.service.ClassroomService;
-import com.cg.module3.finalexamination_module3.service.StudentService;
-import com.cg.module3.finalexamination_module3.Model.Student;
-import com.cg.module3.finalexamination_module3.service.imp.impStudent;
+import com.finalexaminationModule3.Model.Classroom;
+import com.finalexaminationModule3.service.ClassroomService;
+import com.finalexaminationModule3.service.StudentService;
+import com.finalexaminationModule3.Model.Student;
+import com.finalexaminationModule3.service.imp.impStudent;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,8 +30,6 @@ public class UpdateServlet extends HttpServlet {
      * GET ID STUDENT AND UPDATE
      * @param req REQ
      * @param resp RES
-     * @throws ServletException
-     * @throws IOException
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,7 +48,6 @@ public class UpdateServlet extends HttpServlet {
      * Updated success
      * @param req REQ
      * @param resp RES
-     * @throws IOException
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -80,7 +77,7 @@ public class UpdateServlet extends HttpServlet {
             session.setMaxInactiveInterval(15);
 //          Redirect back to students page
             resp.sendRedirect(req.getContextPath() + "/students");
-            System.out.println("======> updated SUCCESS!");
+            System.out.println("======> updated SUCCESS!" + " " + UpdateServlet.class);
         }
     }
 }

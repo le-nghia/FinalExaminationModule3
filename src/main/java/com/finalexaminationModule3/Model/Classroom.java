@@ -1,4 +1,4 @@
-package com.cg.module3.finalexamination_module3.Model;
+package com.finalexaminationModule3.Model;
 
 public class Classroom {
     private int classID;

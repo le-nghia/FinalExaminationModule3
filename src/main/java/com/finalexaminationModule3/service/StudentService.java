@@ -1,8 +1,8 @@
-package com.cg.module3.finalexamination_module3.service;
+package com.finalexaminationModule3.service;
 
-import com.cg.module3.finalexamination_module3.DBContext.DBContext;
-import com.cg.module3.finalexamination_module3.Model.Classroom;
-import com.cg.module3.finalexamination_module3.Model.Student;
+import com.finalexaminationModule3.DBContext.DBContext;
+import com.finalexaminationModule3.Model.Classroom;
+import com.finalexaminationModule3.Model.Student;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,13 +28,8 @@ public List<Student> getAllStudents(){
 
             while (rs.next()) {
                 Student student = new Student();
-                student.setId(rs.getInt("id"));
-                student.setNameStudent(rs.getString("nameStudent"));
-                student.setEmail(rs.getString("email"));
-                student.setDob(rs.getDate("dob").toLocalDate());
-                student.setAddress(rs.getString("address"));
-                student.setPhoneNumber(rs.getString("phoneNumber"));
-                student.setClassID(rs.getInt("classID"));
+
+                Extra(student);
 
                 int classID = rs.getInt("classID");
                 String nameClass = rs.getString("nameClass");
@@ -49,7 +44,7 @@ public List<Student> getAllStudents(){
             DBContext.closed(connection);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Run time error!");
         }
         return students;
     }
@@ -57,7 +52,6 @@ public List<Student> getAllStudents(){
     /**
      * CALL STUDENT BY ID UPDATE
      * @param studentID ID
-     * @return
      */
     public Student getStudentById(int studentID) {
 
@@ -65,6 +59,7 @@ public List<Student> getAllStudents(){
         String query = "SELECT * FROM Student WHERE id = ?";
 
         try {
+
             connection = new DBContext().getConnection();
             cmd = connection.prepareStatement(query);
             cmd.setInt(1, studentID);
@@ -88,7 +83,7 @@ public List<Student> getAllStudents(){
             DBContext.closed(connection);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Run time error!");
         }
         return student;
     }
@@ -96,28 +91,21 @@ public List<Student> getAllStudents(){
     public boolean addStudent(Student student) throws Exception {
 
         connection = new DBContext().getConnection();
+
         try {
+
             String query = "INSERT INTO Student (nameStudent, email, dob, address, phoneNumber, classID) VALUES (?, ?, ?, ?, ?, ?)";
-            cmd = connection.prepareStatement(query);
-
-            cmd.setString(1, student.getNameStudent());
-            cmd.setString(2, student.getEmail());
-            cmd.setDate(3, Date.valueOf(student.getDob()));
-            cmd.setString(4, student.getAddress());
-            cmd.setString(5, student.getPhoneNumber());
-            cmd.setInt(6, student.getClassID());
-
+            ExtraCMD(student, query);
             cmd.executeUpdate();
             System.out.println("===> Add new Student Success!");
 
             DBContext.closed(connection);
             cmd.close();
-
             return true;
+
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Run time error!");
         }
-        return false;
     }
 
     /**
@@ -130,34 +118,30 @@ public List<Student> getAllStudents(){
 
         try {
             connection = new DBContext().getConnection();
-            cmd = connection.prepareStatement(query);
-
-            cmd.setString(1, student.getNameStudent());
-            cmd.setString(2, student.getEmail());
-            cmd.setDate(3, Date.valueOf(student.getDob()));
-            cmd.setString(4, student.getAddress());
-            cmd.setString(5, student.getPhoneNumber());
-            cmd.setInt(6, student.getClassID());
+            ExtraCMD(student, query);
             cmd.setInt(7, student.getId());
             cmd.executeUpdate();
 
             DBContext.closed(connection);
             cmd.close();
             System.out.println("===> CALL TO BACK UPDATE!");
+            System.out.println("====> Class: " + StudentService.class);
+            System.out.println("-----------------------------------");
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Run time error!");
         }
-        return false;
     }
 
     public boolean deleteStudent(int id) throws SQLException {
         connection = new DBContext().getConnection();
+        PreparedStatement cmd;
         try {
 
             String sql = " DELETE FROM Student WHERE id = ? ";
-            PreparedStatement cmd = connection.prepareStatement(sql);
+
+
             cmd = connection.prepareStatement(sql);
             cmd.setInt(1, id);
             cmd.executeUpdate();
@@ -167,14 +151,15 @@ public List<Student> getAllStudents(){
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Run time error!");
         }
-        return false;
     }
 
     public List<Student> searchStudentsByName(String nameStudent) throws SQLException {
+
         List<Student> students = new ArrayList<>();
         connection = new DBContext().getConnection();
+
         try {
 
             String sql = "SELECT * FROM Student WHERE nameStudent LIKE ?";
@@ -182,18 +167,10 @@ public List<Student> getAllStudents(){
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, "%" + nameStudent + "%");
              rs = statement.executeQuery();
+            Student student = new Student();
 
             while (rs.next()) {
-
-                Student student = new Student();
-                student.setId(rs.getInt("id"));
-                student.setNameStudent(rs.getString("nameStudent"));
-                student.setEmail(rs.getString("email"));
-                student.setDob(rs.getDate("dob").toLocalDate());
-                student.setAddress(rs.getString("address"));
-                student.setPhoneNumber(rs.getString("phoneNumber"));
-                student.setClassID(rs.getInt("classID"));
-
+                Extra(student);
                 students.add(student);
             }
 
@@ -201,41 +178,30 @@ public List<Student> getAllStudents(){
             DBContext.closed(connection);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Run time error!");
         }
         return students;
     }
-        public List<Student> searchStudentsByName1(String name) throws SQLException {
-            List<Student> result = new ArrayList<>();
-            for (Student student : result) {
-                if (student.getNameStudent().equalsIgnoreCase(name)) {
-                    result.add(student);
-                }
-            }
-            try (Connection connection = new DBContext().getConnection();
-                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Student WHERE name LIKE ?")) {
-                // Set the parameter in the SQL query
-                statement.setString(1, "%" + name + "%");
-                // Execute the query and process the result set
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()) {
-                        Student student = new Student();
-                        student.setId(resultSet.getInt("id"));
-                        student.setNameStudent(resultSet.getString("name"));
-                        student.setEmail(resultSet.getString("email"));
-                        // Ensure dob is correctly handled based on your Student class and database structure
-                        student.setDob(resultSet.getDate("dob").toLocalDate());
-                        student.setAddress(resultSet.getString("address"));
-                        student.setPhoneNumber(resultSet.getString("phone_number"));
-                        student.setClassID(resultSet.getInt("classroom_id"));
-                        // Add the student to the result list
-                        result.add(student);
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
+
+    private void ExtraCMD(Student student, String query) throws SQLException {
+
+        cmd = connection.prepareStatement(query);
+        cmd.setString(1, student.getNameStudent());
+        cmd.setString(2, student.getEmail());
+        cmd.setDate(3, Date.valueOf(student.getDob()));
+        cmd.setString(4, student.getAddress());
+        cmd.setString(5, student.getPhoneNumber());
+        cmd.setInt(6, student.getClassID());
+    }
+    private void Extra(Student student) throws SQLException {
+        student.setId(rs.getInt("id"));
+        student.setNameStudent(rs.getString("nameStudent"));
+        student.setEmail(rs.getString("email"));
+        student.setDob(rs.getDate("dob").toLocalDate());
+        student.setAddress(rs.getString("address"));
+        student.setPhoneNumber(rs.getString("phoneNumber"));
+        student.setClassID(rs.getInt("classID"));
+    }
+
 }
 
