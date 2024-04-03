@@ -17,13 +17,13 @@ public List<Student> getAllStudents(){
 
         List<Student> students = new ArrayList<>();
 
-        String query = " SELECT s.*, c.classID as classID, c.nameClass as nameClass" +
-                " FROM Student as s " +
-                " INNER JOIN Classroom as c ON s.classID = c.classID ";
+        String sql = " SELECT s.*, c.classID as classID, c.nameClass as nameClass" +
+                        " FROM Student as s " +
+                        " INNER JOIN Classroom as c ON s.classID = c.classID ";
 
         try {
             connection = new DBContext().getConnection();
-            cmd = connection.prepareStatement(query);
+            cmd = connection.prepareStatement(sql);
             rs = cmd.executeQuery();
 
             while (rs.next()) {
@@ -42,8 +42,9 @@ public List<Student> getAllStudents(){
                 student.setClassroom(classroom); // Thêm thông tin về tên lớp học
 
                 students.add(student);
-                System.out.println(" ===> Display all student");
             }
+
+            System.out.println(" ===> Display all student");
             rs.close();
             DBContext.closed(connection);
 
